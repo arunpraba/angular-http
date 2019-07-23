@@ -1,0 +1,45 @@
+<div class="card">
+    <div class="card-body">
+          <div class="form-group">
+              <label for="gitUser">Enter GitHub User</label>
+              <input type="text" [(ngModel)]="user.name" class="form-control" id="gitUser" >
+          </div>
+          <div class="form-group">
+              <label for="gitSort">Sort By</label>
+                  <select class="form-control" [(ngModel)]="user.sort" id="gitSort">
+                    <option *ngFor="let i of sort" [value]="i">{{i}}</option>
+                  </select>
+          </div>
+          <div class="form-group text-center">
+                <button class="btn btn-lg btn-warning" (click)="getUser()" [disabled]="user.sort===''&&user.name===''">Get User</button>
+          </div>
+    </div>
+</div>
+
+<div >
+   <div *ngIf="isLoading" class="alert alert-primary" role="alert">
+  Fetching...
+</div>
+
+   <div *ngIf="errMessage" class="alert alert-danger" role="alert">
+  {{errMessage}}
+</div>
+</div>
+
+
+
+<div *ngIf="responseData" class="d-flex flex-wrap">
+    <div class="card" style="margin:1rem; width: 18rem;" *ngFor="let user of responseData">
+            <img [src]="user.avatar_url" class="card-img-top" alt="user.login">
+            <div class="card-body">
+                <h5 class="card-title">{{user.login}}</h5>
+                <button class="btn btn-primary mr-2" (click)="view(user.url, 'url')">View Profile</button>
+                <button  class="btn btn-secondary mr-2" (click)="view(user.repos_url, 'repo')">View Repo</button>
+            </div>
+    </div>
+    <div >
+        <app-profile *ngIf="isView" [userDetails]="userDetails"> </app-profile>
+        <app-repo *ngIf="isRepo" [userDetails]="repoDetails"> </app-repo>
+    </div>
+
+</div>
